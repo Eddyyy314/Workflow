@@ -1,0 +1,13 @@
+{
+  "name": "nofilter-bot",
+  "version": "1.0.0",
+  "description": "Bot che posta ogni giorno su nofilterthoughts.it",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@supabase/supabase-js": "^2.49.1"
+  }
+}
