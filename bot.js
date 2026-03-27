@@ -1,8 +1,8 @@
-const Anthropic = require("@anthropic-ai/sdk");
+const OpenAI = require("openai");
 const { createClient } = require("@supabase/supabase-js");
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 const supabase = createClient(
@@ -43,14 +43,12 @@ Regole:
 - restituisci solo il testo del post
 `;
 
-  const msg = await anthropic.messages.create({
-    model: "claude-3-5-sonnet-latest",
-    max_tokens: 120,
-    temperature: 0.9,
-    messages: [{ role: "user", content: prompt }],
+  const response = await openai.responses.create({
+    model: "gpt-4.1-mini",
+    input: prompt,
   });
 
-  return msg.content[0].text.trim().replace(/^["']|["']$/g, "");
+  return response.output_text.trim().replace(/^["']|["']$/g, "");
 }
 
 async function main() {
@@ -67,7 +65,10 @@ async function main() {
     group_name: "public",
   };
 
-  const { data, error } = await supabase.from("posts").insert(payload).select();
+  const { data, error } = await supabase
+    .from("posts")
+    .insert(payload)
+    .select();
 
   if (error) {
     console.error("Errore inserimento post:", error);
